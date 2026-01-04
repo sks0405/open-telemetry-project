@@ -18,6 +18,6 @@ build:
   image: gradle:8.5-jdk17
   script:
     - cd src/ad
-    - ./gradlew clean build
+    - ./gradlew clean build --stacktrace
 
 
