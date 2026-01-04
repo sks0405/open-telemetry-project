@@ -17,6 +17,7 @@ build:
   stage: build
   image: gradle:8.5-jdk17
   script:
-    - gradle clean build
+    - cd ad/
+    - ./gradlew clean build
 
 
