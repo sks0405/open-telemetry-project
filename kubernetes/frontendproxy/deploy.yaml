@@ -37,6 +37,13 @@ spec:
             
             - containerPort: 8080
               name: service
+          
+          #readinessProbe:
+          #  httpGet:
+          #    path: /wrong-path
+          #     port: 8080
+          #  initialDelaySeconds: 10
+          #  periodSeconds: 5
           env:
             - name: OTEL_SERVICE_NAME
               valueFrom:
@@ -86,8 +93,12 @@ spec:
             - name: OTEL_RESOURCE_ATTRIBUTES
               value: service.name=$(OTEL_SERVICE_NAME),service.namespace=opentelemetry-demo,service.version=1.12.0
           resources:
+            requests:
+              memory: 100Mi
+              cpu: 100m
             limits:
-              memory: 50Mi
+              memory: 128Mi
+              cpu: 150m
           securityContext:
             runAsGroup: 101
             runAsNonRoot: true
