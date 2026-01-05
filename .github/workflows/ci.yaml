@@ -1,32 +1,49 @@
-# CI for Product Catalog Service
-
 name: product-catalog-ci
 
 on: 
-    push:
-        branches:
-        - main
+  push:
+    branches:
+      - main
 
 jobs:
-    build:
-        runs-on: self-hosted
+  build:
+    runs-on: self-hosted
 
-        steps:
-        - name: checkout code
-          uses: actions/checkout@v4
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-        - name: Setup Go 1.22
-          uses: actions/setup-go@v2
-          with:
-            go-version: 1.22
-        
-        - name: Build
-          run: |
-            cd src/product-catalog
-            go mod download
-            go build -o product-catalog-service main.go
+    - name: Setup Go 1.22
+      uses: actions/setup-go@v5
+      with:
+        go-version: 1.22
 
-        - name: unit tests
-          run: |
-            cd src/product-catalog
-            go test ./...
+    - name: Build
+      run: |
+        cd src/product-catalog
+        go mod download
+        go build -o product-catalog-service main.go
+
+    - name: Unit tests
+      run: |
+        cd src/product-catalog
+        go test ./...
+
+    # -------------------------------
+    # Trivy DevSecOps Steps
+    # -------------------------------
+
+    - name: Trivy filesystem scan (SARIF)
+      run: |
+        cd src/product-catalog
+        trivy fs \
+          --severity HIGH,CRITICAL \
+          --format sarif \
+          --output trivy.sarif \
+          --no-progress \
+          .
+
+    - name: Upload Trivy SARIF report to GitHub Security
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: src/product-catalog/trivy.sarif
