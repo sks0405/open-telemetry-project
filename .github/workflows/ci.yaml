@@ -83,6 +83,11 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Debug DockerHub username
+        run: |
+          echo "Username='${{ secrets.DOCKERHUB_USERNAME }}'"
+
+
       - name: Docker Push
         uses: docker/build-push-action@v6
         with:
