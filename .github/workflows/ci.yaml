@@ -85,5 +85,6 @@ jobs:
 
       - name: Push Docker image to Docker Hub
         run: |
-          docker tag product-catalog:1.0 ${{ secrets.DOCKERHUB_USERNAME }}/product-catalog:1.0
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/product-catalog:1.0
+         IMAGE=${{ secrets.DOCKER_HUB_USERNAME }}/product-catalog:1.0
+         docker tag product-catalog:1.0 $IMAGE
+         docker push $IMAGE
