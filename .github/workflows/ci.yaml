@@ -74,7 +74,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: trivy-catalog-docker-report
-          path: src/product-catalog/trivy-docker-report.txt
+          path: trivy-docker-report.txt
 
       
       - name: Log in to Docker Hub
