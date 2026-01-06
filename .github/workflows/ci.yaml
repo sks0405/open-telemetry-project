@@ -43,6 +43,7 @@ jobs:
             --no-progress
 
       - name: Upload Trivy report
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: trivy-catalog-report
