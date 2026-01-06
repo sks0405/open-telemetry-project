@@ -33,7 +33,8 @@ jobs:
       # Trivy DevSecOps Steps
       # -------------------------------
       - name: Checkout code for Trivy scan
-        run: ! cd src/product-catalog
+        run: |
+          cd src/product-catalog
           trivy fs \
           --severity HIGH,CRITICAL \
           --exit-code 1
