@@ -59,7 +59,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t product-catalog:1.0 .
+          docker build -t product-catalog:1.0 src/product-catalog
       
       - name: Trivy Docker Image Scan
         run: |
