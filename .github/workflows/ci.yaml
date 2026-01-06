@@ -1,6 +1,6 @@
 name: product-catalog-ci
 
-on: 
+on:
   push:
     branches:
       - main
@@ -10,40 +10,38 @@ jobs:
     runs-on: self-hosted
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Setup Go 1.22
-      uses: actions/setup-go@v5
-      with:
-        go-version: 1.22
+      - name: Setup Go 1.22
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.22
 
-    - name: Build
-      run: |
-        cd src/product-catalog
-        go mod download
-        go build -o product-catalog-service main.go
+      - name: Build
+        run: |
+          cd src/product-catalog
+          go mod download
+          go build -o product-catalog-service main.go
 
-    - name: Unit tests
-      run: |
-        cd src/product-catalog
-        go test ./...
+      - name: Unit tests
+        run: |
+          cd src/product-catalog
+          go test ./...
 
-    # -------------------------------
-    # Trivy DevSecOps Steps
-    # -------------------------------
-
-    - name: Trivy filesystem scan (SARIF)
-      run: |
-        cd src/product-catalog
-        trivy fs \
+      # -------------------------------
+      # Trivy DevSecOps Steps
+      # -------------------------------
+      - name: Checkout code for Trivy scan
+        run: ! cd src/product-catalog
+          trivy fs \
           --severity HIGH,CRITICAL \
-          --format sarif \
-          --output trivy.sarif \
-          --no-progress \
-          
-    - name: Upload Trivy JSON report
-      uses: actions/upload-artifact@v4
-      with:
-        name: trivy-fs-report
-        path: src/product-catalog/trivy-report.json
+          --exit-code 1
+          --format table \
+          --output trivy-report.json \
+
+      - name: Upload Trivy report
+        uses: actions/upload-artifact@v4
+        with:
+          name: trivy-catalog-report
+          path: src/product-catalog/trivy-report.json
