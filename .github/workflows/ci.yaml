@@ -83,8 +83,10 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Push Docker image to Docker Hub
-        run: |
-         IMAGE=${{ secrets.DOCKER_HUB_USERNAME }}/product-catalog:1.0
-         docker tag product-catalog:1.0 $IMAGE
-         docker push $IMAGE
+      - name: Docker Push
+        uses: docker/build-push-action@v6
+        with:
+          context: src/product-catalog
+          file: src/product-catalog/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/product-catalog:${{github.run_id}}
