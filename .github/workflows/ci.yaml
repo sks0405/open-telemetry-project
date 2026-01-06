@@ -51,6 +51,14 @@ jobs:
 
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@master
+        with:
+          projectBaseDir: .
+          scannerVersion: 8.0.1.6346
+          scannerBinariesUrl: https://binaries.sonarsource.com/Distribution/sonar-scanner-cli
+          extraProperties: |
+            sonar.projectKey=product-catalog
+            sonar.projectName=ProductCatalog
+            sonar.sources=src/product-catalog
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
