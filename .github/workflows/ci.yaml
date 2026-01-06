@@ -33,17 +33,17 @@ jobs:
       # Trivy DevSecOps Steps
       # -------------------------------
       - name: Checkout code for Trivy scan
+        working-directory: src/product-catalog
         run: |
-          cd src/product-catalog
-          trivy fs \
-          --severity HIGH,CRITICAL \
-          --exit-code 1
-          --format table \
-          --output trivy-report.json \
-          .
+          trivy fs . \
+            --severity HIGH,CRITICAL \
+            --exit-code 1
+            --format table \
+            --output trivy-report.txt \
+            --no-progress
 
       - name: Upload Trivy report
         uses: actions/upload-artifact@v4
         with:
           name: trivy-catalog-report
-          path: src/product-catalog/trivy-report.json
+          path: src/product-catalog/trivy-report.txt
