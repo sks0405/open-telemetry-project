@@ -17,16 +17,6 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: 1.22
-
-      - name: Gitleaks scan
-        uses: gitleaks/gitleaks-action@v2
-
-      - name: Upload Gitleaks Report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: gitleaks-report
-          path: src/product-catalog/gitleaks-report.txt
         
       - name: Build
         run: |
@@ -38,6 +28,26 @@ jobs:
         run: |
           cd src/product-catalog
           go test ./...
+          
+      - name: SonarQube Scan
+        uses: sonarsource/sonarqube-scan-action@v2
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        with:
+          args: >
+            -Dsonar.projectKey=product-catalog
+            -Dsonar.projectName=product-catalog
+            -Dsonar.sources=src/product-catalog
+            -Dsonar.language=go
+            -Dsonar.go.coverage.reportPaths=coverage.out
+
+      - name: SonarQube Quality Gate
+        uses: sonarsource/sonarqube-quality-gate-action@v1
+        timeout-minutes: 5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
 
       # -------------------------------
       # Trivy DevSecOps Steps
