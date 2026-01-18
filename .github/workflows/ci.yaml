@@ -28,6 +28,11 @@ jobs:
         run: |
           cd src/product-catalog
           go test ./...
+
+      - name: Debug SonarQube connectivity
+        run: |
+         curl -v $SONAR_HOST_URL/api/system/status
+
           
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@v2
