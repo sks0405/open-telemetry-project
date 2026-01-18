@@ -29,9 +29,16 @@ jobs:
           cd src/product-catalog
           go test ./...
 
-      - name: Debug SonarQube connectivity
+      - name: Debug Sonar URL
         run: |
-         curl -v $SONAR_HOST_URL/api/system/status
+         if [ -z "$SONAR_HOST_URL" ]; then
+         echo "SONAR_HOST_URL is EMPTY"
+         exit 1
+         fi
+         echo "SONAR_HOST_URL=$SONAR_HOST_URL"
+         env:
+           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
 
           
       - name: SonarQube Scan
