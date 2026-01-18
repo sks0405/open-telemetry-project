@@ -44,8 +44,8 @@ jobs:
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@v2
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          SONAR_TOKEN: squ_df054f57b5aca797d86acd8a545bdbbcefdb433f
+          SONAR_HOST_URL: http://44.251.49.62:9000
         with:
           args: >
             -Dsonar.projectKey=product-catalog
@@ -58,8 +58,8 @@ jobs:
         uses: sonarsource/sonarqube-quality-gate-action@v1
         timeout-minutes: 5
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          SONAR_TOKEN: squ_df054f57b5aca797d86acd8a545bdbbcefdb433f
+          SONAR_HOST_URL: http://44.251.49.62:9000
 
       # -------------------------------
       # Trivy DevSecOps Steps
